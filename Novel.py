@@ -2,8 +2,6 @@
 import urllib.request
 from typing import no_type_check_decorator
 
-from lxml import etree
-
 
 def get_html(url):
     head = {  # 模拟浏览器头部信息，向豆瓣服务器发送消息
@@ -51,6 +49,8 @@ class Novel:
         self.novel_catalog_website = novel_catalog_website
         self.website_is_ok = self.__check_website(novel_catalog_website)
         self.title = ''
+        self.last_chapter_count = 0
+        self.cur_chapter_count = 0
 
     def __check_website(self,novel_catalog_website):
         try:
@@ -64,13 +64,33 @@ class Novel:
         connect = get_html(self.novel_catalog_website)
         self.title = get_novel_title(connect)
 
+        chapter_count = 0
         html_list = connect.split("\n")
         for html_line in html_list:
             if html_line.find("<a") == -1:
                 continue
             if html_line.find("<li") == -1:
                 continue
-            print(html_line)
 
+            depth = 0
+            index = 0
+            title = ''
+            for ch in html_line:
+                if ch == '<':
+                    depth += 1
+                    continue
+                elif ch == '>':
+                    depth -= 1
+                    continue
+                index += 1
+
+                if depth == 0 and ch != ' ' and ch != '\t' and ch != '\n' and ch != '\r':
+                    title += ch
+
+            # print(title) 此处已经获取到每章的标题
+            chapter_count += 1
+
+        cur_chapter_count = chapter_count
+        return chapter_count
 
 

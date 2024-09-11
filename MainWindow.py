@@ -1,5 +1,6 @@
 import sys
 import time
+from Tools.scripts.summarize_stats import to_str
 
 from PySide6 import QtCore,QtWidgets
 from PySide6.QtGui import QTextFrame
@@ -23,8 +24,7 @@ class MainWindow(QtWidgets.QWidget):
     def betch_add_novel(self):
         print('\ncall this func')
         self.widget.resize(100,100)
-        if self.layout() == None:
-            layout = QtWidgets.QFormLayout(self.widget)
+        layout = QtWidgets.QFormLayout(self.widget)
 
         self.webside_edit = QtWidgets.QLineEdit(self.widget)
         layout.addRow("网址",self.webside_edit)
@@ -46,7 +46,10 @@ class MainWindow(QtWidgets.QWidget):
                 err_mes.setText('该网站接连失败')
                 err_mes.exec()
             else:
-                novel.parse_novel_catalog_website()
+                chapter_count = novel.parse_novel_catalog_website()
+                message_box = QMessageBox()
+                message_box.setText(to_str(chapter_count))
+                message_box.exec()
 
 
 

@@ -13,6 +13,7 @@ class MainWindow(QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.resize(400,400)
         self.novel_list = []
+        self.novel_list.append(Novel('https://www.84kanshu.com/book/95298954/'))
 
         but = QtWidgets.QPushButton(self)
         but.setText('添加小说')

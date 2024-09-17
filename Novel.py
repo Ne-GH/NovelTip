@@ -61,14 +61,18 @@ class Novel:
             return False
 
     ### @TODO 返回当前页面章节数量
-    def parse_novel_catalog_website(self)-> int:
+    def parse_novel_catalog_website(self):
         ### 获取http 信息
         connect = get_html(self.novel_catalog_website)
         ### 根据网页信息解析出小说标题
         self.title = get_novel_title(connect)
-        print(self.title)
+        # print(self.title)
+
+
         chapter_count = 0
+        chapter_list = [] # type:list
         html_list = connect.split("\n")
+
         for html_line in html_list:
             if html_line.find("<a") == -1:
                 continue
@@ -91,9 +95,11 @@ class Novel:
                     title += ch
 
             # print(title) #此处已经获取到每章的标题
+            chapter_list.append(title)
             chapter_count += 1
-
-        cur_chapter_count = chapter_count
-        return chapter_count
+        for chapter_name in chapter_list:
+            print(chapter_name)
+        # cur_chapter_count = chapter_count
+        return chapter_count,chapter_list
 
 

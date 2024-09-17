@@ -10,7 +10,7 @@ class MainWindow(QtWidgets.QWidget):
         self.resize(400,400)
         self.novel_list = []
         # self.novel_list.append(Novel('https://www.84kanshu.com/book/95298954/'))
-        self.novel_list.append(Novel('https://www.ximalaya.com/album/75949958'))
+        # self.novel_list.append(Novel('https://www.ximalaya.com/album/75949958'))
 
         but = QtWidgets.QPushButton(self)
         but.setText('添加小说')

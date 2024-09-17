@@ -1,6 +1,5 @@
 
 import urllib.request
-from typing import no_type_check_decorator
 
 
 def get_html(url):
@@ -32,13 +31,16 @@ def get_novel_title(html) :
     html_list = html.split('\n')
 
     for html_line in html_list:
+        begin_h1 = html_line.find("<h1")
+
         if html_line.find("<h1") == -1:
             continue
         if html_line.find("title") == -1:
             continue
 
-        pos_beg = html_line.find(">")
-        pos_end = html_line.rfind("<")
+        pos_beg = html_line.find(">",begin_h1)
+        pos_end = html_line.find("<",pos_beg)
+
         return html_line[pos_beg+1:pos_end]
     return ""
 
@@ -52,18 +54,19 @@ class Novel:
         self.last_chapter_count = 0
         self.cur_chapter_count = 0
 
-    def __check_website(self,novel_catalog_website):
+    def __check_website(self,novel_catalog_website)-> bool:
         try:
             return urllib.request.urlopen(novel_catalog_website).code == 200
         except Exception as err:
             return False
 
     ### @TODO 返回当前页面章节数量
-    def parse_novel_catalog_website(self):
+    def parse_novel_catalog_website(self)-> int:
         ### 获取http 信息
         connect = get_html(self.novel_catalog_website)
+        ### 根据网页信息解析出小说标题
         self.title = get_novel_title(connect)
-
+        print(self.title)
         chapter_count = 0
         html_list = connect.split("\n")
         for html_line in html_list:
@@ -87,7 +90,7 @@ class Novel:
                 if depth == 0 and ch != ' ' and ch != '\t' and ch != '\n' and ch != '\r':
                     title += ch
 
-            # print(title) 此处已经获取到每章的标题
+            # print(title) #此处已经获取到每章的标题
             chapter_count += 1
 
         cur_chapter_count = chapter_count

@@ -1,9 +1,5 @@
-import sys
-import time
-from Tools.scripts.summarize_stats import to_str
 
 from PySide6 import QtCore,QtWidgets
-from PySide6.QtGui import QTextFrame
 from PySide6.QtWidgets import QWidget, QMessageBox
 
 from Novel import Novel
@@ -13,7 +9,8 @@ class MainWindow(QtWidgets.QWidget):
         super().__init__(*args,**kwargs)
         self.resize(400,400)
         self.novel_list = []
-        self.novel_list.append(Novel('https://www.84kanshu.com/book/95298954/'))
+        # self.novel_list.append(Novel('https://www.84kanshu.com/book/95298954/'))
+        self.novel_list.append(Novel('https://www.ximalaya.com/album/75949958'))
 
         but = QtWidgets.QPushButton(self)
         but.setText('添加小说')
@@ -49,7 +46,7 @@ class MainWindow(QtWidgets.QWidget):
             else:
                 chapter_count = novel.parse_novel_catalog_website()
                 message_box = QMessageBox()
-                message_box.setText(to_str(chapter_count))
+                message_box.setText(str(str(chapter_count)))
                 message_box.exec()
 
 

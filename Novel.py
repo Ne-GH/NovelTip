@@ -58,6 +58,7 @@ class Novel:
         try:
             return urllib.request.urlopen(novel_catalog_website).code == 200
         except Exception as err:
+            print("网页连接失败！！")
             return False
 
     ### @TODO 返回当前页面章节数量
@@ -67,7 +68,6 @@ class Novel:
         ### 根据网页信息解析出小说标题
         self.title = get_novel_title(connect)
         # print(self.title)
-
 
         chapter_count = 0
         chapter_list = [] # type:list
@@ -94,12 +94,12 @@ class Novel:
                 if depth == 0 and ch != ' ' and ch != '\t' and ch != '\n' and ch != '\r':
                     title += ch
 
-            # print(title) #此处已经获取到每章的标题
+
+
             chapter_list.append(title)
             chapter_count += 1
-        for chapter_name in chapter_list:
-            print(chapter_name)
-        # cur_chapter_count = chapter_count
+        # for chapter_name in chapter_list:
+        #     print(chapter_name)
         return chapter_count,chapter_list
 
 

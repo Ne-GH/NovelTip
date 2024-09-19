@@ -5,28 +5,27 @@ from PySide6.QtWidgets import QWidget, QMessageBox, QVBoxLayout, QLabel, QScroll
 from Novel import Novel
 
 
-class ChapterWindow(QWidget):  # 新添加
-    def __init__(self, chapters, *args, **kwargs):  # 新添加
-        super().__init__(*args, **kwargs)  # 新添加
+class ChapterWindow(QWidget):
+    def __init__(self, chapters, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-        layout = QVBoxLayout(self)  # 新添加
+        layout = QVBoxLayout(self)
 
-        container = QtWidgets.QWidget()  # 新添加
-        container_layout = QVBoxLayout(container)  # 新添加
+        container = QtWidgets.QWidget()
+        container_layout = QVBoxLayout(container)
 
-        print("chapterWindow act\n")
 
-        for chapter in chapters:  # 新添加
-            label = QLabel(chapter)  # 新添加
-            container_layout.addWidget(label)  # 新添加
+        for chapter in chapters:
+            label = QLabel(chapter)
+            container_layout.addWidget(label)
 
-        scroll_area = QScrollArea()  # 新添加
-        scroll_area.setWidget(container)  # 新添加
-        scroll_area.setWidgetResizable(True)  # 新添加
+        scroll_area = QScrollArea()
+        scroll_area.setWidget(container)
+        scroll_area.setWidgetResizable(True)
 
-        layout.addWidget(scroll_area)  # 新添加
+        layout.addWidget(scroll_area)
 
-        self.setLayout(layout)  # 新添加
+        self.setLayout(layout)
 
 
 class MainWindow(QtWidgets.QWidget):
@@ -45,7 +44,6 @@ class MainWindow(QtWidgets.QWidget):
         self.widget.hide()
 
     def betch_add_novel(self):
-        print('\ncall this func')
         self.widget.resize(100,100)
         layout = QtWidgets.QFormLayout(self.widget)
 
@@ -56,7 +54,6 @@ class MainWindow(QtWidgets.QWidget):
 
 
     def message(self):
-        message = QMessageBox(self)
         self.novel_list.append(Novel(self.webside_edit.text()))
 
         self.widget.close()
@@ -69,17 +66,15 @@ class MainWindow(QtWidgets.QWidget):
             else:
                 chapter_count, chapters = novel.parse_novel_catalog_website()
 
-                # print(f"{chapters}")
 
-                # Create and show the ChapterWindow with the list of chapters
-                if chapters:  # MODIFIED: 检查是否成功获取章节
-                    self.chapter_window = ChapterWindow(chapters)  # 新添加
-                    self.chapter_window.setWindowTitle('章节列表')  # 新添加
-                    self.chapter_window.resize(300, 400)  # 新添加
-                    self.chapter_window.show()  # 新添加
+                if chapters:
+                    self.chapter_window = ChapterWindow(chapters)
+                    self.chapter_window.setWindowTitle('章节列表')
+                    self.chapter_window.resize(300, 400)
+                    self.chapter_window.show()
                 else:
                     err_mes = QMessageBox(self)
-                    err_mes.setText('未能获取章节信息')  # MODIFIED: 如果没有章节则显示错误信息
+                    err_mes.setText('未能获取章节信息')
                     err_mes.exec()
 
 

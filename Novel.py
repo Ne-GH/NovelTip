@@ -1,5 +1,6 @@
 
 import urllib.request
+from lxml import etree
 
 
 def get_html(url):
@@ -69,37 +70,15 @@ class Novel:
         self.title = get_novel_title(connect)
         # print(self.title)
 
-        chapter_count = 0
-        chapter_list = [] # type:list
-        html_list = connect.split("\n")
+        html = etree.HTML(connect)
+        chapter_list = []
+        title_list = html.xpath("//li/a/span/text()")
+        print(len(title_list))
+        for part in title_list:
+            chapter_list.append(part)
 
-        for html_line in html_list:
-            if html_line.find("<a") == -1:
-                continue
-            if html_line.find("<li") == -1:
-                continue
+        chapter_count = len(title_list)
 
-            depth = 0
-            index = 0
-            title = ''
-            for ch in html_line:
-                if ch == '<':
-                    depth += 1
-                    continue
-                elif ch == '>':
-                    depth -= 1
-                    continue
-                index += 1
-
-                if depth == 0 and ch != ' ' and ch != '\t' and ch != '\n' and ch != '\r':
-                    title += ch
-
-
-
-            chapter_list.append(title)
-            chapter_count += 1
-        # for chapter_name in chapter_list:
-        #     print(chapter_name)
         return chapter_count,chapter_list
 
 
